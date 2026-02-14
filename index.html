@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>For Samantha 💝 From Daddy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;700&family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky-top: #1a1040;
+    --sky-mid: #2d1b69;
+    --sky-bottom: #6b3fa0;
+    --warm-gold: #ffd700;
+    --soft-pink: #ffb6d9;
+    --heart-red: #ff4d6d;
+    --moon-glow: #fff8dc;
+    --cloud-white: rgba(255,255,255,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Fredoka', sans-serif;
+    background: var(--sky-top);
+    -webkit-tap-highlight-color: transparent;
+    cursor: default;
+  }
+
+  /* ═══════════════════════════════════════
+     NIGHT SKY SCENE
+     ═══════════════════════════════════════ */
+  .sky {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      var(--sky-top) 0%,
+      var(--sky-mid) 40%,
+      var(--sky-bottom) 75%,
+      #9b6fc0 100%
+    );
+    z-index: 0;
+  }
+
+  /* Twinkling stars */
+  .stars-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--dur) infinite ease-in-out;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Moon */
+  .moon {
+    position: fixed;
+    top: 5%;
+    right: 8%;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fffde7, #ffe082 60%, #ffca28);
+    box-shadow: 0 0 40px 15px rgba(255, 248, 220, 0.25), 0 0 80px 30px rgba(255, 248, 220, 0.12);
+    z-index: 2;
+    animation: moonGlow 4s infinite alternate ease-in-out;
+  }
+
+  .moon::after {
+    content: '';
+    position: absolute;
+    top: 18px; left: 22px;
+    width: 15px; height: 12px;
+    border-radius: 50%;
+    background: rgba(255,200,40,0.3);
+  }
+
+  @keyframes moonGlow {
+    0% { box-shadow: 0 0 40px 15px rgba(255,248,220,0.25), 0 0 80px 30px rgba(255,248,220,0.12); }
+    100% { box-shadow: 0 0 60px 25px rgba(255,248,220,0.35), 0 0 120px 50px rgba(255,248,220,0.18); }
+  }
+
+  /* Fireflies */
+  .firefly {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--warm-gold);
+    box-shadow: 0 0 8px 3px rgba(255,215,0,0.5);
+    z-index: 3;
+    animation: fireflyFloat var(--dur) infinite ease-in-out;
+    opacity: 0;
+  }
+
+  @keyframes fireflyFloat {
+    0% { opacity: 0; transform: translate(0, 0); }
+    15% { opacity: 0.9; }
+    50% { opacity: 0.4; transform: translate(var(--dx), var(--dy)); }
+    85% { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(calc(var(--dx) * -0.5), calc(var(--dy) * 1.5)); }
+  }
+
+  /* Soft rolling hills at bottom */
+  .hills {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    z-index: 2;
+  }
+
+  .hill {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50% 50% 0 0;
+    background: linear-gradient(180deg, #2a1558, #1a0e3a);
+  }
+
+  .hill-1 { width: 140%; left: -20%; height: 120px; bottom: -20px; opacity: 0.6; }
+  .hill-2 { width: 90%; left: 30%; height: 100px; bottom: -10px; opacity: 0.8; }
+  .hill-3 { width: 120%; left: -10%; height: 80px; bottom: -5px; }
+
+  /* ═══════════════════════════════════════
+     CONTENT
+     ═══════════════════════════════════════ */
+  .content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px 200px;
+    min-height: 100vh;
+  }
+
+  /* Floating hearts that appear on tap */
+  .tap-heart {
+    position: fixed;
+    font-size: 28px;
+    pointer-events: none;
+    z-index: 100;
+    animation: heartRise 2s forwards ease-out;
+  }
+
+  @keyframes heartRise {
+    0% { opacity: 1; transform: scale(0.5) translateY(0) rotate(0deg); }
+    50% { opacity: 0.9; transform: scale(1.3) translateY(-80px) rotate(-15deg); }
+    100% { opacity: 0; transform: scale(0.8) translateY(-200px) rotate(15deg); }
+  }
+
+  /* ── HEADER ── */
+  .header-badge {
+    margin-top: 15px;
+    padding: 8px 24px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeSlideDown 1s 0.3s both ease-out;
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── BIG HEART WITH HUG ── */
+  .heart-section {
+    margin: 30px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeSlideDown 1s 0.6s both ease-out;
+  }
+
+  .big-heart-wrap {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .big-heart-wrap:active {
+    transform: scale(1.15);
+  }
+
+  .big-heart {
+    font-size: 110px;
+    filter: drop-shadow(0 5px 30px rgba(255, 77, 109, 0.4));
+    animation: heartbeat 1.5s infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.12); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+  }
+
+  .hug-text {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 77, 109, 0.85);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+    box-shadow: 0 3px 15px rgba(255,77,109,0.3);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+
+  /* Hug animation overlay */
+  .hug-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: radial-gradient(circle, rgba(255,77,109,0.15), rgba(255,182,217,0.05));
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: hugFadeIn 0.4s ease-out;
+  }
+
+  .hug-overlay.active {
+    display: flex;
+  }
+
+  @keyframes hugFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hug-arms {
+    font-size: 120px;
+    animation: hugSqueeze 2s ease-in-out;
+  }
+
+  @keyframes hugSqueeze {
+    0% { transform: scale(0.3); opacity: 0; }
+    30% { transform: scale(1.2); opacity: 1; }
+    50% { transform: scale(0.95); }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .hug-message {
+    font-family: 'Caveat', cursive;
+    font-size: 32px;
+    color: white;
+    margin-top: 15px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    animation: hugTextIn 1s 0.5s both ease-out;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  @keyframes hugTextIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NAME ── */
+  .name-section {
+    animation: fadeSlideDown 1s 0.9s both ease-out;
+    text-align: center;
+  }
+
+  .for-text {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .name {
+    font-family: 'Baloo 2', cursive;
+    font-size: 52px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--soft-pink), #ff8fab, var(--warm-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 3px 6px rgba(255,182,217,0.3));
+    line-height: 1.1;
+  }
+
+  .sparkle-emoji {
+    display: inline-block;
+    animation: spinSpark 3s infinite linear;
+    -webkit-text-fill-color: initial;
+  }
+
+  @keyframes spinSpark {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  /* ── MESSAGE CARDS ── */
+  .message-card {
+    width: min(90%, 400px);
+    margin: 18px auto;
+    padding: 22px 26px;
+    border-radius: 24px;
+    position: relative;
+    animation: cardIn 0.8s both ease-out;
+  }
+
+  .card-1 {
+    background: linear-gradient(135deg, rgba(255,77,109,0.15), rgba(255,182,217,0.1));
+    border: 1px solid rgba(255,182,217,0.2);
+    backdrop-filter: blur(12px);
+    animation-delay: 1.2s;
+  }
+
+  .card-2 {
+    background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,182,217,0.08));
+    border: 1px solid rgba(255,215,0,0.15);
+    backdrop-filter: blur(12px);
+    animation-delay: 1.5s;
+  }
+
+  .card-3 {
+    background: linear-gradient(135deg, rgba(150,100,255,0.12), rgba(255,182,217,0.08));
+    border: 1px solid rgba(150,100,255,0.2);
+    backdrop-filter: blur(12px);
+    animation-delay: 1.8s;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card-emoji {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .card-text {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+  }
+
+  .card-text .highlight {
+    color: var(--soft-pink);
+    font-weight: 600;
+  }
+
+  .card-text .gold {
+    color: var(--warm-gold);
+    font-weight: 600;
+  }
+
+  /* ── INTERACTIVE WISHING STAR ── */
+  .wish-section {
+    margin: 30px auto;
+    text-align: center;
+    animation: cardIn 0.8s 2.1s both ease-out;
+  }
+
+  .wish-star {
+    font-size: 70px;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.3s, filter 0.3s;
+    animation: starFloat 3s infinite ease-in-out;
+    filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));
+  }
+
+  .wish-star:hover, .wish-star:active {
+    transform: scale(1.2) rotate(15deg);
+    filter: drop-shadow(0 0 30px rgba(255,215,0,0.7));
+  }
+
+  @keyframes starFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+  }
+
+  .wish-label {
+    display: block;
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: rgba(255,215,0,0.7);
+    margin-top: 8px;
+  }
+
+  .wish-result {
+    margin-top: 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: white;
+    min-height: 36px;
+    text-shadow: 0 2px 8px rgba(255,215,0,0.3);
+    transition: opacity 0.4s;
+  }
+
+  /* ── DADDY'S SIGNATURE ── */
+  .signature {
+    margin: 20px auto 40px;
+    text-align: center;
+    animation: cardIn 0.8s 2.4s both ease-out;
+  }
+
+  .sig-line {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,182,217,0.4), transparent);
+    margin: 0 auto 18px;
+  }
+
+  .sig-text {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .sig-name {
+    font-family: 'Caveat', cursive;
+    font-size: 38px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 15px rgba(255,182,217,0.3);
+  }
+
+  .sig-heart {
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
+    font-size: 30px;
+    vertical-align: middle;
+  }
+
+  /* ── DISTANCE MESSAGE ── */
+  .distance-note {
+    margin: 10px auto 30px;
+    padding: 16px 24px;
+    max-width: min(85%, 360px);
+    background: rgba(255,255,255,0.04);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+    animation: cardIn 0.8s 2.7s both ease-out;
+  }
+
+  .distance-note p {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .distance-note .glow {
+    color: rgba(255,215,0,0.8);
+  }
+
+  /* Shooting star on click */
+  .shooting-star-anim {
+    position: fixed;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, white, transparent);
+    z-index: 50;
+    pointer-events: none;
+    animation: shootStar 0.8s forwards ease-in;
+    border-radius: 2px;
+  }
+
+  @keyframes shootStar {
+    0% { transform: rotate(-30deg) translateX(0); opacity: 1; }
+    100% { transform: rotate(-30deg) translateX(300px); opacity: 0; }
+  }
+
+  /* Tap ripple */
+  .tap-ripple {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,215,0,0.5);
+    z-index: 99;
+    pointer-events: none;
+    animation: ripple 0.8s forwards ease-out;
+  }
+
+  @keyframes ripple {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 380px) {
+
+  /* ── MUSIC TOGGLE ── */
+  .music-btn {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 50;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,215,0,0.3);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: fadeSlideDown 1s 0.3s both ease-out;
+  }
+
+  .music-btn:hover, .music-btn:active {
+    background: rgba(255,215,0,0.15);
+    border-color: rgba(255,215,0,0.5);
+    transform: scale(1.1);
+  }
+
+  .music-btn .note {
+    font-size: 22px;
+    transition: transform 0.3s;
+  }
+
+  .music-btn.playing .note {
+    animation: noteVibe 0.6s infinite alternate ease-in-out;
+  }
+
+  .music-btn.playing {
+    border-color: rgba(255,215,0,0.6);
+    box-shadow: 0 0 15px rgba(255,215,0,0.2);
+  }
+
+  @keyframes noteVibe {
+    0% { transform: rotate(-8deg) scale(1); }
+    100% { transform: rotate(8deg) scale(1.15); }
+  }
+
+  .music-btn .bars {
+    display: none;
+    gap: 2px;
+    align-items: flex-end;
+    height: 16px;
+  }
+
+  .music-btn.playing .bars { display: flex; }
+  .music-btn.playing .note-icon { display: none; }
+
+  .music-btn .bar {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--warm-gold);
+    animation: eqBar 0.8s infinite alternate ease-in-out;
+  }
+
+  .music-btn .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .music-btn .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+  .music-btn .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+  .music-btn .bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+  .music-btn .bar:nth-child(5) { height: 5px; animation-delay: 0.25s; }
+
+  @keyframes eqBar {
+    0% { height: 3px; }
+    100% { height: 16px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 380px) {
+    .name { font-size: 42px; }
+    .big-heart { font-size: 90px; }
+    .card-text { font-size: 16px; }
+    .moon { width: 65px; height: 65px; top: 3%; right: 5%; }
+  }
+
+  @media (min-width: 768px) {
+    .name { font-size: 64px; }
+    .content { padding-top: 50px; }
+    .moon { width: 110px; height: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sky background -->
+<div class="sky"></div>
+
+<!-- Stars -->
+<div class="stars-container" id="starsContainer"></div>
+
+<!-- Moon -->
+<div class="moon"></div>
+
+<!-- Fireflies -->
+<div id="fireflies"></div>
+
+<!-- Hills -->
+<div class="hills">
+  <div class="hill hill-1"></div>
+  <div class="hill hill-2"></div>
+  <div class="hill hill-3"></div>
+</div>
+
+<!-- Hug overlay -->
+<div class="hug-overlay" id="hugOverlay">
+  <div class="hug-arms">🤗</div>
+  <div class="hug-message">Daddy is hugging you<br>right now, baby girl!</div>
+</div>
+
+<!-- Background music -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music toggle -->
+<div class="music-btn" id="musicBtn" role="button" aria-label="Play music">
+  <span class="note note-icon">🎵</span>
+  <div class="bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="content">
+
+  <div class="header-badge">✨ Valentine's Day 2026 ✨</div>
+
+  <!-- Heart with hug trigger -->
+  <div class="heart-section">
+    <div class="big-heart-wrap" id="hugTrigger" role="button" aria-label="Tap for a hug from Daddy">
+      <div class="big-heart">❤️</div>
+      <div class="hug-text">TAP FOR A HUG 🤗</div>
+    </div>
+  </div>
+
+  <!-- Name -->
+  <div class="name-section">
+    <div class="for-text">For my beautiful</div>
+    <div class="name">
+      Samantha <span class="sparkle-emoji">✨</span>
+    </div>
+  </div>
+
+  <!-- Message cards -->
+  <div class="message-card card-1">
+    <span class="card-emoji">🌙</span>
+    <div class="card-text">
+      Every night, when you look up at the <span class="gold">moon</span>, 
+      know that <span class="highlight">Daddy is looking at the same moon</span> 
+      and thinking of you.
+    </div>
+  </div>
+
+  <div class="message-card card-2">
+    <span class="card-emoji">🦋</span>
+    <div class="card-text">
+      You are the <span class="gold">bravest</span>, 
+      <span class="highlight">kindest</span>, most 
+      <span class="gold">wonderful</span> girl in the whole universe. 
+      And you make Daddy <span class="highlight">so proud</span> every single day.
+    </div>
+  </div>
+
+  <div class="message-card card-3">
+    <span class="card-emoji">💫</span>
+    <div class="card-text">
+      No matter how far away I am, my love for you 
+      <span class="highlight">reaches across everything</span> &mdash; 
+      across oceans, across the sky, 
+      all the way to <span class="gold">wherever you are</span>. 
+      Always.
+    </div>
+  </div>
+
+  <!-- Wishing star -->
+  <div class="wish-section">
+    <div class="wish-star" id="wishStar" role="button" aria-label="Tap the star to make a wish">⭐</div>
+    <span class="wish-label">Tap the star to make a wish!</span>
+    <div class="wish-result" id="wishResult"></div>
+  </div>
+
+  <!-- Signature -->
+  <div class="signature">
+    <div class="sig-line"></div>
+    <div class="sig-text">With all the love in my heart,</div>
+    <div class="sig-name">
+      Daddy Fredy <span class="sig-heart">💝</span>
+    </div>
+  </div>
+
+  <!-- Distance note -->
+  <div class="distance-note">
+    <p>
+      I miss you <span class="glow">more than all the stars</span> in the sky, baby girl. 
+      But every star you see tonight is a <span class="glow">kiss from Daddy</span>. 
+      Count them &mdash; that's how much I love you. 
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // ── Stars ──
+  const starsContainer = document.getElementById('starsContainer');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = 1.5 + Math.random() * 3;
+    star.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 70}%;
+      width: ${size}px;
+      height: ${size}px;
+      --dur: ${2 + Math.random() * 4}s;
+      animation-delay: ${Math.random() * 5}s;
+    `;
+    starsContainer.appendChild(star);
+  }
+
+  // ── Fireflies ──
+  const firefliesContainer = document.getElementById('fireflies');
+  for (let i = 0; i < 12; i++) {
+    const f = document.createElement('div');
+    f.className = 'firefly';
+    f.style.cssText = `
+      left: ${10 + Math.random() * 80}%;
+      top: ${30 + Math.random() * 60}%;
+      --dur: ${4 + Math.random() * 6}s;
+      --dx: ${-40 + Math.random() * 80}px;
+      --dy: ${-50 + Math.random() * 40}px;
+      animation-delay: ${Math.random() * 8}s;
+    `;
+    firefliesContainer.appendChild(f);
+  }
+
+  // ── Tap hearts ──
+  const heartEmojis = ['💖', '💗', '💕', '💝', '💞', '🩷', '❤️', '✨', '🌟'];
+
+  document.addEventListener('click', (e) => {
+    // Spawn a floating heart
+    const heart = document.createElement('div');
+    heart.className = 'tap-heart';
+    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    heart.style.left = (e.clientX - 14) + 'px';
+    heart.style.top = (e.clientY - 14) + 'px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+
+    // Spawn a gentle ripple
+    const ripple = document.createElement('div');
+    ripple.className = 'tap-ripple';
+    ripple.style.left = (e.clientX - 10) + 'px';
+    ripple.style.top = (e.clientY - 10) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 800);
+
+    // Occasional shooting star
+    if (Math.random() < 0.25) {
+      const star = document.createElement('div');
+      star.className = 'shooting-star-anim';
+      star.style.left = Math.random() * 60 + '%';
+      star.style.top = Math.random() * 40 + '%';
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 800);
+    }
+  });
+
+  // ── Hug feature ──
+  const hugTrigger = document.getElementById('hugTrigger');
+  const hugOverlay = document.getElementById('hugOverlay');
+  let hugActive = false;
+
+  hugTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (hugActive) return;
+    hugActive = true;
+    hugOverlay.classList.add('active');
+    
+    // Burst of hearts
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => {
+        const h = document.createElement('div');
+        h.className = 'tap-heart';
+        h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+        h.style.left = (20 + Math.random() * 60) + 'vw';
+        h.style.top = (30 + Math.random() * 40) + 'vh';
+        h.style.fontSize = (24 + Math.random() * 20) + 'px';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+      }, i * 120);
+    }
+
+    setTimeout(() => {
+      hugOverlay.classList.remove('active');
+      hugActive = false;
+    }, 3500);
+  });
+
+  hugOverlay.addEventListener('click', () => {
+    hugOverlay.classList.remove('active');
+    hugActive = false;
+  });
+
+  // ── Music ──
+  const bgMusic = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let musicPlaying = false;
+  let musicStarted = false;
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      bgMusic.pause();
+      musicBtn.classList.remove('playing');
+      musicPlaying = false;
+    } else {
+      bgMusic.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+        musicStarted = true;
+      }).catch(() => {});
+    }
+  }
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+  });
+
+  // Auto-start music on first hug tap if not started yet
+  const origHugHandler = hugTrigger.onclick;
+  hugTrigger.addEventListener('click', () => {
+    if (!musicStarted) {
+      bgMusic.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+        musicStarted = true;
+      }).catch(() => {});
+    }
+  });
+
+  // ── Wishing star ──
+  const wishes = [
+    "Daddy wishes he could hold you right now 🤗",
+    "You are Daddy's whole world 🌍💖",
+    "Sending you a million kisses! 😘😘😘",
+    "Daddy is SO proud of you, baby girl 🌟",
+    "You're the best thing that ever happened to me 💝",
+    "I'll see you soon, my princess 👑",
+    "You are loved more than words can say 💫",
+    "Dream big, baby girl — Daddy believes in you! 🦋",
+    "One day we'll count the real stars together 🌙",
+    "Every heartbeat says: I love Samantha 💓",
+  ];
+
+  let wishIndex = 0;
+  const wishStar = document.getElementById('wishStar');
+  const wishResult = document.getElementById('wishResult');
+
+  wishStar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    wishResult.style.opacity = '0';
+    
+    // Star burst
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const spark = document.createElement('div');
+        spark.className = 'tap-heart';
+        spark.textContent = '✨';
+        const rect = wishStar.getBoundingClientRect();
+        spark.style.left = (rect.left + rect.width / 2 - 14 + (Math.random() - 0.5) * 60) + 'px';
+        spark.style.top = (rect.top + rect.height / 2 - 14 + (Math.random() - 0.5) * 60) + 'px';
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 2000);
+      }, i * 60);
+    }
+
+    setTimeout(() => {
+      wishResult.textContent = wishes[wishIndex % wishes.length];
+      wishResult.style.opacity = '1';
+      wishIndex++;
+    }, 300);
+  });
+</script>
+</body>
+</html>
