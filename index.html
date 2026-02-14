@@ -520,6 +520,82 @@
 
   /* Responsive */
   @media (max-width: 380px) {
+
+  /* ── MUSIC TOGGLE ── */
+  .music-btn {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 50;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,215,0,0.3);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: fadeSlideDown 1s 0.3s both ease-out;
+  }
+
+  .music-btn:hover, .music-btn:active {
+    background: rgba(255,215,0,0.15);
+    border-color: rgba(255,215,0,0.5);
+    transform: scale(1.1);
+  }
+
+  .music-btn .note {
+    font-size: 22px;
+    transition: transform 0.3s;
+  }
+
+  .music-btn.playing .note {
+    animation: noteVibe 0.6s infinite alternate ease-in-out;
+  }
+
+  .music-btn.playing {
+    border-color: rgba(255,215,0,0.6);
+    box-shadow: 0 0 15px rgba(255,215,0,0.2);
+  }
+
+  @keyframes noteVibe {
+    0% { transform: rotate(-8deg) scale(1); }
+    100% { transform: rotate(8deg) scale(1.15); }
+  }
+
+  .music-btn .bars {
+    display: none;
+    gap: 2px;
+    align-items: flex-end;
+    height: 16px;
+  }
+
+  .music-btn.playing .bars { display: flex; }
+  .music-btn.playing .note-icon { display: none; }
+
+  .music-btn .bar {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--warm-gold);
+    animation: eqBar 0.8s infinite alternate ease-in-out;
+  }
+
+  .music-btn .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .music-btn .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+  .music-btn .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+  .music-btn .bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+  .music-btn .bar:nth-child(5) { height: 5px; animation-delay: 0.25s; }
+
+  @keyframes eqBar {
+    0% { height: 3px; }
+    100% { height: 16px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 380px) {
     .name { font-size: 42px; }
     .big-heart { font-size: 90px; }
     .card-text { font-size: 16px; }
@@ -558,6 +634,23 @@
 <div class="hug-overlay" id="hugOverlay">
   <div class="hug-arms">🤗</div>
   <div class="hug-message">Daddy is hugging you<br>right now, baby girl!</div>
+</div>
+
+<!-- Background music -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music toggle -->
+<div class="music-btn" id="musicBtn" role="button" aria-label="Play music">
+  <span class="note note-icon">🎵</span>
+  <div class="bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
 </div>
 
 <!-- Main content -->
@@ -739,6 +832,43 @@
   hugOverlay.addEventListener('click', () => {
     hugOverlay.classList.remove('active');
     hugActive = false;
+  });
+
+  // ── Music ──
+  const bgMusic = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let musicPlaying = false;
+  let musicStarted = false;
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      bgMusic.pause();
+      musicBtn.classList.remove('playing');
+      musicPlaying = false;
+    } else {
+      bgMusic.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+        musicStarted = true;
+      }).catch(() => {});
+    }
+  }
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+  });
+
+  // Auto-start music on first hug tap if not started yet
+  const origHugHandler = hugTrigger.onclick;
+  hugTrigger.addEventListener('click', () => {
+    if (!musicStarted) {
+      bgMusic.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+        musicStarted = true;
+      }).catch(() => {});
+    }
   });
 
   // ── Wishing star ──
